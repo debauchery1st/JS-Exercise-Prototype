@@ -77,12 +77,18 @@ function Car(model, mpg) {
 Car.prototype.fill = function(gallons) {
   this.tank += gallons;
 }
-// Car.prototype.drive = function(miles) {
-//   if (this.tank > miles * this.milesPerGallon) {
-//     this.odometer += miles;
-//     this.tank -= miles * this.milesPerGallon;
-//   };
-// }
+
+Car.prototype.drive = function(miles) {
+  if (this.tank * this.milesPerGallon > miles) {
+    this.odometer += miles; // clock that
+    this.tank -= miles / this.milesPerGallon; // subract gas
+  } else {
+    this.odometer += (this.tank * this.milesPerGallon);
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  } // else
+} // prototype.drive
+
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -93,21 +99,22 @@ Car.prototype.fill = function(gallons) {
 
 
 function Baby(name, age, favoriteToy) {
-  Object.create(Person, this);
-  this.name = name;
-  this.age = age;
+  Person.call(this, name, age);
   this.favoriteToy = favoriteToy;
 }
+
 Baby.prototype = Object.create(Person.prototype);
 Baby.prototype.play = function() {return `Playing with ${this.favoriteToy}`};
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. when this is unbound, it refers to the global scope
+  2. when a constructor is called, this refers to the instance being constructed.
+  3. when creating, this refers to the new object being created
+  4. look to the left of the dit, when using Dot notation. 
+      someObj.someAttribute.
+      this === someObj
 */
 
 
