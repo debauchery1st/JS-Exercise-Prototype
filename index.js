@@ -39,10 +39,21 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = Array();
+}
+Person.prototype.eat = function (it) {
+  (this.stomach.length < 10) ? this.stomach.push(it):0; 
 }
 
+Person.prototype.poop = function() {
+  this.stomach = Array();
+}
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`
+}
 /*
   TASK 2
     - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
@@ -57,9 +68,26 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(model, mpg) {
+  this.tank = 0;
+  this.odometer = 0;
+  this.model = model;
+  this.milesPerGallon = mpg;
 }
+Car.prototype.fill = function(gallons) {
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function(miles) {
+  if (this.tank * this.milesPerGallon > miles) {
+    this.odometer += miles; // clock that
+    this.tank -= miles / this.milesPerGallon; // subract gas
+  } else {
+    this.odometer += (this.tank * this.milesPerGallon);
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  } // else
+} // prototype.drive
 
 /*
   TASK 3
@@ -68,18 +96,25 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
 
+
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
 }
 
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function() {return `Playing with ${this.favoriteToy}`};
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. when this is unbound, it refers to the global scope
+  2. when a constructor is called, this refers to the instance being constructed.
+  3. when creating, this refers to the new object being created
+  4. look to the left of the dit, when using Dot notation. 
+      someObj.someAttribute.
+      this === someObj
 */
 
 
